@@ -34,9 +34,21 @@ class Comment
      */
     private $topic;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+	    $this->createdAt = new DateTimeImmutable();
+	    $this->active = false;
     }
 
     public function getId(): ?int
@@ -76,6 +88,30 @@ class Comment
     public function setTopic(?News $topic): self
     {
         $this->topic = $topic;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }

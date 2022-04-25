@@ -50,6 +50,12 @@ class News
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="news")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->viewCount = 0;
@@ -110,6 +116,13 @@ class News
         return $this;
     }
 
+    public function incrementViewCount(): self
+    {
+        $this->viewCount += 1;
+
+        return $this;
+    }
+
     public function getAnnotation(): ?string
     {
         return $this->annotation;
@@ -148,6 +161,18 @@ class News
                 $comment->setTopic(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

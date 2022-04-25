@@ -19,6 +19,8 @@ services:
     container_name: news_php
     build: docker/php
     restart: always
+    ports:
+      - '9000:9000'
     volumes:
       - ./:/var/www/news:cached
     depends_on:

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -19,6 +20,18 @@ class CommentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+    public function findOnlyActiveForNews(News $news)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.active = :val')
+            ->setParameter('val', true)
+            ->andWhere('c.topic = :topic')
+            ->setParameter('topic', $news)
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
